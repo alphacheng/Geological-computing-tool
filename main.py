@@ -20,8 +20,6 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         # page1
         self.import_data_btn.clicked.connect(self.import_data)
         self.export_data_btn.clicked.connect(self.export_data)
-        self.pushButton_11.clicked.connect(self.detail_1_1)
-        self.pushButton_12.clicked.connect(self.detail_1_2)
         # page2
         self.export_data_btn_2.clicked.connect(self.export_data_page_2)
         self.compute_button_1.clicked.connect(self.compute_page_2)
@@ -41,8 +39,8 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         self.center()  # 初始化时窗口居中
 
         # 设置子窗口标题、图标
-        Window.setWindowTitle('浅层地层破裂压力计算工具')
-        Window.setWindowIcon(QIcon('../input/logo.png'))
+        Window.window_title = 'SWPU'
+        Window.window_icon = 'logo.png'
 
     def center(self):
         """窗口居中"""
@@ -57,16 +55,10 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         if file_path[0]:
             try:
                 self.x, self.y = read_file(file_path[0])
-                drawing(self.x, self.y, title='输入', path='./output/input_data.png')
-                img_1 = QPixmap('./output/input_data.png')
-                self.label_1.setPixmap(img_1)
-                self.label_1.setScaledContents(True)
-
                 new_x, new_y = compute_1(self.x, self.y)
-                drawing(new_x, new_y, title='结果', path='./output/result.png')
-                img_2 = QPixmap('./output/result.png')
-                self.label_2.setPixmap(img_2)
-                self.label_2.setScaledContents(True)
+                child_win = Window(self.x, self.y, other=True, x_2=new_x, y_2=new_y, title_1='输入', title_2='结果')
+                child_win.show()
+
                 self.result_x = new_x
                 self.result_y = new_y
             except Exception as e:
@@ -135,10 +127,8 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         key = self.lineEdit.text()
         if key and key.isnumeric() and self.result_x and self.result_y:
             new_x, new_y = compute_2(self.result_x, self.result_y)
-            drawing(new_x, new_y, title='结果', path='./output/result_2.png')
-            img_3 = QPixmap('./output/result_2.png')
-            self.label_3.setPixmap(img_3)
-            self.label_3.setScaledContents(True)
+            child_win = Window(new_x, new_y, title_1='结果')
+            child_win.show()
         else:
             self.alert('计算变量不能为空！')
 
