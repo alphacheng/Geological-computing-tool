@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QDesktopWidget
 from QTdesigner.four import Ui_Form
 from functions.functions import *
-from test import Window
 
 
 class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
@@ -36,9 +35,14 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         # page4选用公式
         self.formula = None
 
+        # 设置父窗口标题、图标
         self.setWindowTitle('浅层地层破裂压力计算工具')  # 窗口标题
         self.setWindowIcon(QIcon('./input/logo.png'))  # 窗口图标
         self.center()  # 初始化时窗口居中
+
+        # 设置子窗口标题、图标
+        Window.setWindowTitle('浅层地层破裂压力计算工具')
+        Window.setWindowIcon(QIcon('../input/logo.png'))
 
     def center(self):
         """窗口居中"""
@@ -215,7 +219,7 @@ if __name__ == '__main__':
     my_pyqt_form = MyPyQT_Form()
     import datetime
 
-    d1 = datetime.datetime(2018, 12, 23)
+    d1 = datetime.datetime(2019, 1, 1)
     d2 = datetime.datetime.now()
     count = (d2 - d1).days
     if count > 15:
