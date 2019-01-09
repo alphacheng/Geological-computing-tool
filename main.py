@@ -1,6 +1,3 @@
-import sys
-from PyQt5 import QtWidgets
-from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QDesktopWidget
 from QTdesigner.four import Ui_Form
@@ -124,6 +121,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
             print('No such file')
 
     def compute_page_2(self):
+        """page2的计算按钮"""
         key = self.lineEdit.text()
         if key and key.isnumeric() and self.result_x and self.result_y:
             new_x, new_y = compute_2(self.result_x, self.result_y)
@@ -133,6 +131,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
             self.alert('计算变量不能为空！')
 
     def compute_page_3(self):
+        """page3的计算按钮"""
         a1 = self.lineEdit_3.text()
         b1 = self.lineEdit_4.text()
         c1 = self.lineEdit_5.text()
@@ -158,6 +157,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
                 print(e)
 
     def compute_page_4(self):
+        """page4的计算按钮"""
         a1 = self.lineEdit_12.text()
         b1 = self.lineEdit_15.text()
         c1 = self.lineEdit_14.text()
@@ -189,19 +189,12 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         QMessageBox.information(self, "警告",
                                 self.tr(msg))
 
+    # 选择page4所用的的计算公式
     def choosed_1(self):
         self.formula = compute_4_1
 
     def choosed_2(self):
         self.formula = compute_4_2
-
-    def detail_1_1(self):
-        f = Window(self.x, self.y)
-        f.show()
-
-    def detail_1_2(self):
-        f = Window(self.result_x, self.result_y)
-        f.show()
 
 
 if __name__ == '__main__':
