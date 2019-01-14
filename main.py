@@ -200,14 +200,5 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     my_pyqt_form = MyPyQT_Form()
-    import datetime
-
-    d1 = datetime.datetime(2019, 1, 1)
-    d2 = datetime.datetime.now()
-    count = (d2 - d1).days
-    if count > 15:
-        my_pyqt_form.alert('RunOut!')
-        sys.exit()
-    else:
-        my_pyqt_form.show()
+    my_pyqt_form.show()
     sys.exit(app.exec_())
