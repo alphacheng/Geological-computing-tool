@@ -51,6 +51,9 @@ class Window(QtWidgets.QWidget):
     window_title = 'SWPU'
     window_icon = '../input/logo.png'
 
+    position_x = 100
+    position_y = 100
+
     def __init__(self, x=[1, 2, 3], y=[3, 2, 3], other=False, x_2=None, y_2=None, title_1=None, title_2=None):
         super(Window, self).__init__()
         self.setWindowTitle(self.window_title)
@@ -68,6 +71,7 @@ class Window(QtWidgets.QWidget):
 
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar(self.canvas, self)
+        self.other = other
         self.count = 2 if other else 1
         self.plot()
 
@@ -76,6 +80,11 @@ class Window(QtWidgets.QWidget):
         layout.addWidget(self.toolbar)
         layout.addWidget(self.canvas)
         self.setLayout(layout)
+
+        # 每次调用时重置窗口位置
+        self.move(self.position_x, self.position_y)
+        Window.position_x += 100
+        Window.position_y += 100
 
     def plot(self):
         ''' plot some random stuff '''
@@ -91,12 +100,13 @@ class Window(QtWidgets.QWidget):
             ax.invert_xaxis()
             ax.yaxis.set_ticks_position('left')
 
-            ax_2 = plt.subplot(1, self.count, 2)
-            plt.sca(ax_2)
-            plt.plot(self.x_2, self.y_2, '*-')
-            plt.xlabel('X轴')
-            plt.ylabel('Y轴')
-            plt.title(self.title_2)
+            if self.other:
+                ax_2 = plt.subplot(1, self.count, 2)
+                plt.sca(ax_2)
+                plt.plot(self.x_2, self.y_2, '*-')
+                plt.xlabel('X轴')
+                plt.ylabel('Y轴')
+                plt.title(self.title_2)
 
             ax = plt.gca()
             ax.xaxis.set_ticks_position('top')
@@ -110,7 +120,7 @@ class Window(QtWidgets.QWidget):
 if __name__ == '__main__':
     # x, y = read_file('D:/py-code/web-security-check/input/input_data.txt')
     app = QtWidgets.QApplication(sys.argv)
-    main = Window(x=[1, 2, 3], y=[3, 2, 3], other=True, x_2=[1, 2, 3], y_2=[1, 3, 3])
+    main = Window(x=[-1, -2, -1], y=[-1, -2, -3], other=True, x_2=[1, 2, 3], y_2=[1, 3, 3])
     # main = Window(x=[1, 2, 3], y=[3, 2, 3], title_1='Test')
     # main = Window()
     main.show()

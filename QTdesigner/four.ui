@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1099</width>
-    <height>279</height>
+    <width>1185</width>
+    <height>296</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -221,38 +221,6 @@ font-weight:900;</string>
       <layout class="QGridLayout" name="gridLayout_8">
        <item row="1" column="0">
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="2" alignment="Qt::AlignTop">
-          <widget class="QPushButton" name="compute_btn_3">
-           <property name="maximumSize">
-            <size>
-             <width>980</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>计算</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="export_data_btn_3">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>导出数据</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
@@ -266,7 +234,7 @@ font-weight:900;</string>
            </property>
           </spacer>
          </item>
-         <item row="2" column="0" colspan="3">
+         <item row="3" column="0" colspan="7">
           <layout class="QGridLayout" name="gridLayout_7">
            <item row="2" column="0">
             <widget class="QLineEdit" name="lineEdit_2">
@@ -551,6 +519,45 @@ font-size: 20px;
            </item>
           </layout>
          </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="compute_btn_3">
+           <property name="maximumSize">
+            <size>
+             <width>980</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>计算</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="pushButton_13">
+           <property name="text">
+            <string>清除</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="export_data_btn_3">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>导出</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item row="0" column="0">
@@ -585,19 +592,6 @@ font-size: 20px;
            </property>
           </widget>
          </item>
-         <item row="0" column="2" alignment="Qt::AlignTop">
-          <widget class="QPushButton" name="compute_btn_4">
-           <property name="maximumSize">
-            <size>
-             <width>980</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>计算</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <spacer name="horizontalSpacer_5">
            <property name="orientation">
@@ -611,7 +605,17 @@ font-size: 20px;
            </property>
           </spacer>
          </item>
-         <item row="2" column="0" colspan="3">
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="radioButton_2">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string>井口载荷=防喷器重量+表层套管重量+技术套管过提重量</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="7">
           <layout class="QGridLayout" name="gridLayout_10">
            <item row="1" column="2">
             <widget class="QPushButton" name="pushButton_6">
@@ -896,13 +900,30 @@ font-size: 20px;
            </item>
           </layout>
          </item>
-         <item row="1" column="0">
-          <widget class="QRadioButton" name="radioButton_2">
-           <property name="styleSheet">
-            <string notr="true"/>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="compute_btn_4">
+           <property name="maximumSize">
+            <size>
+             <width>980</width>
+             <height>16777215</height>
+            </size>
            </property>
            <property name="text">
-            <string>井口载荷=防喷器重量+表层套管重量+技术套管过提重量</string>
+            <string>计算</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="pushButton_12">
+           <property name="text">
+            <string>清除</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="pushButton_11">
+           <property name="text">
+            <string>导出</string>
            </property>
           </widget>
          </item>

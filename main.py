@@ -33,7 +33,11 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         # 设置父窗口标题、图标
         self.setWindowTitle('浅层地层破裂压力计算工具')  # 窗口标题
         self.setWindowIcon(QIcon('./input/logo.png'))  # 窗口图标
-        self.center()  # 初始化时窗口居中
+        # 初始化时窗口居中
+        # self.center()
+
+        # 初始化位置左上角
+        self.move(0, 0)
 
         # 设置子窗口标题、图标
         Window.window_title = 'SWPU'
@@ -123,7 +127,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
     def compute_page_2(self):
         """page2的计算按钮"""
         key = self.lineEdit.text()
-        if key and key.isnumeric() and self.result_x and self.result_y:
+        if key and key.isdigit() and self.result_x and self.result_y:
             new_x, new_y = compute_2(self.result_x, self.result_y)
             child_win = Window(new_x, new_y, title_1='结果')
             child_win.show()
@@ -170,7 +174,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
             return 0
         variables = [a1, b1, c1, a2, b2, c2]
         for x in variables:
-            if x and x.isnumeric():
+            if x and x.isdigit():
                 continue
             else:
                 ready = False
