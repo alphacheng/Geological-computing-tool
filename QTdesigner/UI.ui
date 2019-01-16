@@ -35,7 +35,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="iconSize">
       <size>
@@ -279,7 +279,7 @@ font-weight:900;</string>
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_9">
          <item row="0" column="4">
-          <widget class="QPushButton" name="pushButton_11">
+          <widget class="QPushButton" name="export_data_btn_4">
            <property name="text">
             <string>导出</string>
            </property>
@@ -294,7 +294,7 @@ font-weight:900;</string>
             </size>
            </property>
            <property name="text">
-            <string>计算</string>
+            <string>打开</string>
            </property>
           </widget>
          </item>

@@ -34,6 +34,9 @@ class Table(QMainWindow):
         # 设置计算公式
         self.formula = None
 
+        # 保存计算数据
+        self.data = {'n': None, 'x': None, 'y': None, 'z': None, 'r': None}
+
         # 初始化数据
         for row in range(1):
             for column in range(1):
@@ -76,6 +79,25 @@ class Table(QMainWindow):
         QMessageBox.information(self, "警告",
                                 self.tr(msg))
 
+    def set_data(self):
+        row_count = self.model.rowCount()
+        n, x, y, z, r = [], [], [], [], []
+
+        def func(item):
+            if not item:
+                return 'None'
+            else:
+                return item.text()
+
+        for row in range(row_count):
+            n.append(func(self.model.item(row, 0)))
+            x.append(func(self.model.item(row, 1)))
+            y.append(func(self.model.item(row, 2)))
+            z.append(func(self.model.item(row, 3)))
+            r.append(func(self.model.item(row, 4)))
+        self.data = {'n': n, 'x': x, 'y': y, 'z': z, 'r': r}
+        # print(self.data)
+
     def calculate(self):
         row_count = self.model.rowCount()
         result = None
@@ -95,6 +117,7 @@ class Table(QMainWindow):
                 print(e)
         if not result:
             self.alert("数据输入不正确或输入框未失去焦点！")
+        self.set_data()
 
     def clear_data(self):
         row_count = self.model.rowCount()

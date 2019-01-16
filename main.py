@@ -29,6 +29,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         # page4
         self.radioButton.clicked['bool'].connect(self.choosed_1)
         self.radioButton_2.clicked['bool'].connect(self.choosed_2)
+        self.export_data_btn_4.clicked.connect(self.export_data_page_4)
         self.compute_btn_4.clicked.connect(self.compute_page_4)
         # page4选用公式
         self.formula = None
@@ -61,6 +62,9 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
 
     def change_position(self) -> (int, int):
         """每次新建子窗口时更改位置"""
+        if self.position_y > 800:
+            self.position_x = -100
+            self.position_y = 80
         self.position_x += 100
         self.position_y += 100
         return self.position_x, self.position_y
@@ -110,8 +114,8 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
 
     def compute_page_2(self):
         """page2的计算按钮"""
-        key = self.lineEdit.text()
-        if key and key.isdigit() and self.result_x and self.result_y:
+        key = float(self.lineEdit.text())
+        if key and self.result_x and self.result_y:
             new_x, new_y = compute_2(self.result_x, self.result_y)
             child_win = Drawing(new_x, new_y, title_1='结果')
             child_win.move(*self.change_position())
@@ -140,34 +144,71 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         try:
             self.table_page_3 = Table(['油田名', '井口载荷', '套管自重', '摩擦阻力', '最小入泥深度'])
             self.table_page_3.formula = compute_3
+            self.table_page_3.move(*self.change_position())
             self.table_page_3.show()
         except Exception:
             print(Exception)
 
     def export_data_page_3(self):
         """page3导出数据"""
-        file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
-                                                          "('*.txt)")
-        if file_path[0]:
-            try:
-                with open(file_path[0], 'w') as f:
-                    for i in range(0, len(self.result_x)):
-                        f.write(str(self.result_x[i]))
-                        f.write(' ' + str(self.result_y[i]) + '\n')
-            except Exception as e:
-                print(e)
-                raise e
-        else:
-            print('No such file')
+        try:
+            data = self.table_page_3.data
+            file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
+                                                              "('*.txt)")
+            if file_path[0]:
+                try:
+                    with open(file_path[0], 'w') as f:
+                        for i in range(0, len(data['r'])):
+                            f.write(data['n'][i])
+                            f.write(' ' + data['x'][i])
+                            f.write(' ' + data['y'][i])
+                            f.write(' ' + data['z'][i])
+                            f.write(' ' + data['r'][i] + '\n')
+                except Exception as e:
+                    print(e)
+                    raise e
+            else:
+                print('No such file')
+        except Exception as e:
+            self.alert('无任何数据存在！')
+            print(e)
 
     def compute_page_4(self):
         """page4的计算按钮"""
+        if not self.formula:
+            self.alert('请先选择计算公式！')
+            return 0
         try:
             self.table_page_4 = Table(['油田名', '表套重量', '固井水泥浆重', '防喷器重', '井口载荷'])
             self.table_page_4.formula = self.formula
+            self.table_page_4.move(*self.change_position())
             self.table_page_4.show()
         except Exception:
             print(Exception)
+
+    def export_data_page_4(self):
+        """page4导出数据"""
+        try:
+            data = self.table_page_4.data
+            file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
+                                                              "('*.txt)")
+            if file_path[0]:
+                try:
+                    with open(file_path[0], 'w') as f:
+                        for i in range(0, len(data['r'])):
+                            f.write(data['n'][i])
+                            f.write(' ' + data['x'][i])
+                            f.write(' ' + data['y'][i])
+                            f.write(' ' + data['z'][i])
+                            f.write(' ' + data['r'][i] + '\n')
+                except Exception as e:
+                    print(e)
+                    raise e
+            else:
+                print('No such file')
+        except Exception as e:
+            self.alert('无任何数据存在！')
+            print(e)
 
     # 选择page4所用的的计算公式
     def choosed_1(self):
