@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QDesktopWidget
-from QTdesigner.four import Ui_Form
+from QTdesigner.UI import Ui_Form
 from functions.functions import *
+from functions.table import *
 
 
 class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
@@ -12,11 +13,13 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         self.y = []
         self.result_x = []
         self.result_y = []
+        self.position_x = -100
+        self.position_y = 80
 
         # 重写点击事件
         # page1
-        self.import_data_btn.clicked.connect(self.import_data)
-        self.export_data_btn.clicked.connect(self.export_data)
+        self.import_data_btn.clicked.connect(self.import_data_page_1)
+        self.export_data_btn.clicked.connect(self.export_data_page_1)
         # page2
         self.export_data_btn_2.clicked.connect(self.export_data_page_2)
         self.compute_button_1.clicked.connect(self.compute_page_2)
@@ -40,8 +43,10 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         self.move(0, 0)
 
         # 设置子窗口标题、图标
-        Window.window_title = 'SWPU'
-        Window.window_icon = 'logo.png'
+        Drawing.window_title = 'SWPU'
+        Drawing.window_icon = 'logo.png'
+        Table.window_title = 'SWPU'
+        Table.window_icon = 'logo.png'
 
     def center(self):
         """窗口居中"""
@@ -50,14 +55,33 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         self.move((screen.width() - size.width() - 300) / 2,
                   (screen.height() - size.height() - 200) / 2)
 
-    def import_data(self):
+    def alert(self, msg: str):
+        QMessageBox.information(self, "警告",
+                                self.tr(msg))
+
+    def change_position(self) -> (int, int):
+        """每次新建子窗口时更改位置"""
+        self.position_x += 100
+        self.position_y += 100
+        return self.position_x, self.position_y
+
+    def closeEvent(self, event):
+        """退出确认"""
+        reply = QMessageBox.question(self, '确认', '确认退出吗', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
+    def import_data_page_1(self):
         """导入数据"""
         file_path = QtWidgets.QFileDialog.getOpenFileName(self, '导入数据', './input', ('*.txt'))
         if file_path[0]:
             try:
                 self.x, self.y = read_file(file_path[0])
                 new_x, new_y = compute_1(self.x, self.y)
-                child_win = Window(self.x, self.y, other=True, x_2=new_x, y_2=new_y, title_1='输入', title_2='结果')
+                child_win = Drawing(self.x, self.y, other=True, x_2=new_x, y_2=new_y, title_1='输入', title_2='结果')
+                child_win.move(*self.change_position())
                 child_win.show()
 
                 self.result_x = new_x
@@ -68,48 +92,8 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         else:
             print('No such file')
 
-    def export_data(self):
+    def export_data_page_1(self):
         """导出数据"""
-        file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
-                                                          "('*.txt)")
-        if file_path[0]:
-            try:
-                with open(file_path[0], 'w') as f:
-                    for i in range(0, len(self.result_x)):
-                        f.write(str(self.result_x[i]))
-                        f.write(' ' + str(self.result_y[i]) + '\n')
-            except Exception as e:
-                print(e)
-                raise e
-        else:
-            print('No such file')
-
-    def closeEvent(self, event):
-        """退出确认"""
-        reply = QMessageBox.question(self, '确认', '确认退出吗', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()
-
-    def export_data_page_2(self):
-        """page2导出数据"""
-        file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
-                                                          "('*.txt)")
-        if file_path[0]:
-            try:
-                with open(file_path[0], 'w') as f:
-                    for i in range(0, len(self.result_x)):
-                        f.write(str(self.result_x[i]))
-                        f.write(' ' + str(self.result_y[i]) + '\n')
-            except Exception as e:
-                print(e)
-                raise e
-        else:
-            print('No such file')
-
-    def export_data_page_3(self):
-        """page3导出数据"""
         file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
                                                           "('*.txt)")
         if file_path[0]:
@@ -129,69 +113,61 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         key = self.lineEdit.text()
         if key and key.isdigit() and self.result_x and self.result_y:
             new_x, new_y = compute_2(self.result_x, self.result_y)
-            child_win = Window(new_x, new_y, title_1='结果')
+            child_win = Drawing(new_x, new_y, title_1='结果')
+            child_win.move(*self.change_position())
             child_win.show()
         else:
             self.alert('计算变量不能为空！')
 
-    def compute_page_3(self):
-        """page3的计算按钮"""
-        a1 = self.lineEdit_3.text()
-        b1 = self.lineEdit_4.text()
-        c1 = self.lineEdit_5.text()
-        a2 = self.lineEdit_8.text()
-        b2 = self.lineEdit_9.text()
-        c2 = self.lineEdit_10.text()
-        ready = True
-        variables = [a1, b1, c1, a2, b2, c2]
-        for x in variables:
-            if x and x.isnumeric():
-                continue
-            else:
-                ready = False
-                self.alert('计算变量不能为空！')
-                break
-        if ready:
+    def export_data_page_2(self):
+        """page2导出数据"""
+        file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
+                                                          "('*.txt)")
+        if file_path[0]:
             try:
-                d1 = compute_3(float(a1), float(b1), float(c1))
-                d2 = compute_3(float(a2), float(b2), float(c2))
-                self.lineEdit_6.setText(str(d1))
-                self.lineEdit_11.setText(str(d2))
+                with open(file_path[0], 'w') as f:
+                    for i in range(0, len(self.result_x)):
+                        f.write(str(self.result_x[i]))
+                        f.write(' ' + str(self.result_y[i]) + '\n')
             except Exception as e:
                 print(e)
+                raise e
+        else:
+            print('No such file')
+
+    def compute_page_3(self):
+        """page3的计算按钮"""
+        try:
+            self.table_page_3 = Table(['油田名', '井口载荷', '套管自重', '摩擦阻力', '最小入泥深度'])
+            self.table_page_3.formula = compute_3
+            self.table_page_3.show()
+        except Exception:
+            print(Exception)
+
+    def export_data_page_3(self):
+        """page3导出数据"""
+        file_path = QtWidgets.QFileDialog.getSaveFileName(self, "save file", "./output",
+                                                          "('*.txt)")
+        if file_path[0]:
+            try:
+                with open(file_path[0], 'w') as f:
+                    for i in range(0, len(self.result_x)):
+                        f.write(str(self.result_x[i]))
+                        f.write(' ' + str(self.result_y[i]) + '\n')
+            except Exception as e:
+                print(e)
+                raise e
+        else:
+            print('No such file')
 
     def compute_page_4(self):
         """page4的计算按钮"""
-        a1 = self.lineEdit_12.text()
-        b1 = self.lineEdit_15.text()
-        c1 = self.lineEdit_14.text()
-        a2 = self.lineEdit_18.text()
-        b2 = self.lineEdit_19.text()
-        c2 = self.lineEdit_20.text()
-        ready = True
-        if not self.formula:
-            self.alert('请先选择计算方式！')
-            return 0
-        variables = [a1, b1, c1, a2, b2, c2]
-        for x in variables:
-            if x and x.isdigit():
-                continue
-            else:
-                ready = False
-                self.alert('计算变量不能为空！')
-                break
-        if ready:
-            try:
-                d1 = self.formula(float(a1), float(b1), float(c1))
-                d2 = self.formula(float(a2), float(b2), float(c2))
-                self.lineEdit_16.setText(str(d1))
-                self.lineEdit_21.setText(str(d2))
-            except Exception as e:
-                print(e)
-
-    def alert(self, msg: str):
-        QMessageBox.information(self, "警告",
-                                self.tr(msg))
+        try:
+            self.table_page_4 = Table(['油田名', '表套重量', '固井水泥浆重', '防喷器重', '井口载荷'])
+            self.table_page_4.formula = self.formula
+            self.table_page_4.show()
+        except Exception:
+            print(Exception)
 
     # 选择page4所用的的计算公式
     def choosed_1(self):

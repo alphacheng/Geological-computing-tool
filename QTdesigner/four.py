@@ -13,7 +13,7 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.setWindowModality(QtCore.Qt.WindowModal)
         Form.setEnabled(True)
-        Form.resize(1185, 296)
+        Form.resize(1389, 302)
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
         self.tabWidget = QtWidgets.QTabWidget(Form)
