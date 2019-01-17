@@ -18,7 +18,8 @@ def read_file(file):
     return x, y
 
 
-def compute_1(x: list, y: list):
+def compute_1(x: list, y: list) -> tuple:
+    """page1计算公式"""
     new_x, new_y = [], []
     new_x = x
     for i in y:
@@ -27,6 +28,7 @@ def compute_1(x: list, y: list):
 
 
 def compute_2(x: list, y: list) -> tuple:
+    """page2计算公式"""
     new_x, new_y = [], []
     new_x = x
     for i in y:
@@ -35,14 +37,17 @@ def compute_2(x: list, y: list) -> tuple:
 
 
 def compute_3(x: float, y: float, z: float) -> float:
+    """page3计算公式"""
     return (x + y) / z
 
 
 def compute_4_1(x: float, y: float, z: float) -> float:
+    """page4计算公式一"""
     return (x + y) / z
 
 
 def compute_4_2(x: float, y: float, z: float) -> float:
+    """page4计算公式二"""
     x = x + 1
     return (x + y) / z
 
